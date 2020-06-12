@@ -7,7 +7,11 @@ const countValue = "span.badge";
 const editCounterTitle = '//div/label[text()="Edit Counter Title: "]';
 const llf = "//button[@name='negative']";
 const llfValue = "//input[@name='lower']";
-
+const leftCrossButton = "//button[text()='X']";
+const ulf = "//button[@name='positive']";
+const ulfValue = "//input[@name='upper']";
+const rightCrossButton = "//button[@class='btn-danger btn-outline-danger btn Ripple-parent close-button']";
+const subButtons = "//button[@class='btn-black btn Ripple-parent']";
 
 describe('Before each describe', () => {
     it('should open url CCA',  () =>  {
@@ -49,16 +53,60 @@ describe('Counter 1', () => {
         browser.waitUntil(() => $(llf).isDisplayed() === true);
         const text = $(llfValue).getValue();
         expect(text).toEqual('1');
-        browser.pause(5000)
     });
     it('should check that spinner increase value +1',  () => {
         $(llfValue).click();
-        browser.keys('ArrowUp')
-        browser.pause(5000);
+        browser.keys('ArrowUp');
+        const text = $(llfValue).getValue();
+        expect(text).toEqual('2');
     });
     it('should check that spinner increase value -1',  () => {
-        $(llfValue).click();
-        browser.keys('ArrowDown')
+        browser.keys('ArrowDown');
+        const text = $(llfValue).getValue();
+        expect(text).toEqual('1');
+    });
+    it('should check that red Cross is clickable',  () =>  {
+        const result = $(leftCrossButton).isClickable();
+        expect(result).toEqual(true);
+    });
+    it('should left X is works',  () => {
+        $(leftCrossButton).click();
+        const text = $(llf).getText();
+        expect(text).toEqual('CHANGE STEP OPTIONS?')
+    });
+    it('should check ulf is clickable',  () => {
+        const result = $(ulf).isClickable();
+        expect(result).toEqual(true);
+    });
+    it('should 3 is present',  () => {
+        $(ulf).click();
+        browser.waitUntil(() => $(ulf).isDisplayed() === true);
+        const text = $(ulfValue).getValue();
+        expect(text).toEqual('3');
+    });
+    it('should check that spinner increase value +1',  () => {
+        $(ulfValue).click();
+        browser.keys('ArrowUp');
+        const text = $(ulfValue).getValue();
+        expect(text).toEqual('4');
+    });
+    it('should check that spinner dicrease value -1',  () => {
+        browser.keys('ArrowDown');
+        const text = $(ulfValue).getValue();
+        expect(text).toEqual('3');
+    });
+    it('should check that red Cross is clickable',  () =>  {
+        const result = $(rightCrossButton).isClickable();
+        expect(result).toEqual(true);
+    });
+    it('should left X is works',  () => {
+        $(rightCrossButton).click();
+        const text = $(llf).getText();
+        expect(text).toEqual('CHANGE STEP OPTIONS?')
+        browser.pause(5000)
+    });
+    it('should check SB is clickable',  () => {
+        browser.$$(subButtons).includes()
         browser.pause(5000);
     });
-})
+});
