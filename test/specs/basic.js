@@ -173,7 +173,7 @@ describe('Counter 1', () => {
     });
 });
 //////////////////////////////////// ADD Gena
-describe("ADD section tests",function(){
+describe("ADD section tests",function() {
     it('should have "Enter Counter Title:" field', function () {
         browser.refresh();
         const text = $(enterCounterTitle).getText();
@@ -224,20 +224,20 @@ describe("ADD section tests",function(){
         expect(isClickable).toEqual(true);
     });
 });
+///////////// Vitaliy
 describe('Counter 3', () => {
     it ('should create counter 2', ()=>{
+        browser.refresh();
         $(addCounterButton).click();
         browser.waitUntil(() => $(llf).isDisplayed() === true);
         const text = $(secondCounterName).getText();
         expect(text).toEqual('2. Counter Name');
-        browser.pause(1000);
     })
     it ('should create counter3', ()=> {
         $(addCounterButton).click();
         browser.waitUntil(() => $(llf).isDisplayed() === true);
         const text1 = $(thirdCounterName).getText();
         expect(text1).toEqual('3. Counter Name');
-        browser.pause(1000);
     })
     it('should Count value is present',  () => {
         const text = $(thirdCountValue).getText();
@@ -258,7 +258,6 @@ describe('Counter 3', () => {
         browser.keys('ArrowUp')
         const text = $(thirdLlfValue).getValue();
         expect(text).toEqual('2');
-        browser.pause(2000);
     });
     it('should check that spinner decrease value -1',  () => {
         browser.keys('ArrowDown')
@@ -280,7 +279,6 @@ describe('Counter 3', () => {
     })
     it ('should check that third ulf consist 3',()=>{
         $(thirdUlf).click();
-        // browser.waitUntil(()=> $(thirdUlfValue).isDisplayed() === true);
         const result = $(thirdUlfValue).getValue();
         expect(result).toEqual("3");
     })
