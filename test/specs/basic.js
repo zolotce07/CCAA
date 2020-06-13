@@ -12,6 +12,21 @@ const ulf = "//button[@name='positive']";
 const ulfValue = "//input[@name='upper']";
 const rightCrossButton = "//button[@class='btn-danger btn-outline-danger btn Ripple-parent close-button']";
 const subButtons = "//button[@class='btn-black btn Ripple-parent']";
+const errorZero = "//span[@style]";
+////////////// Tanya
+const subButton = "//button[contains(text(),\'-1\')]";
+const addButton = '//body//button[8]';
+const deleteButton = "//button[@id='1']";
+const resetButton = "//button[@class='btn-primary btn Ripple-parent reset']";
+const editNameField = "//input[@id='1']";
+const defaultCounter = "//div[@class]/h3";
+//////////////Gena
+const enterCounterTitleField = '//input[@name="name"]';
+const enterInitialCountField = "//input[@name='value']";
+const addCounterButton ="//button[text()='Add Counter']";
+const enterCounterTitle = "//label[contains(text(),'Enter Counter Title:')]";
+const enterInitialCount = "//label[contains(text(),'Enter Initial Count:')]";
+
 
 describe('Before each describe', () => {
     it('should open url CCA',  () =>  {
@@ -19,6 +34,17 @@ describe('Before each describe', () => {
         browser.url(link);
     });
 })
+// describe("Boundary testing of input fields", () => {
+//     it('should throw up Error by input 0 in LLF ',  () => {
+//         $(llf).click();
+//         $(llfValue).clearValue();
+//         $(llfValue).addValue('0');
+//         const error = $(errorZero).getText();
+//         expect(error).toEqual('ERROR: Must be greater than zero');
+//
+//     });
+
+//})
 describe('Counter 1', () => {
     it('should return correct page',  () =>  {
         const text = browser.getTitle();
@@ -99,14 +125,103 @@ describe('Counter 1', () => {
         const result = $(rightCrossButton).isClickable();
         expect(result).toEqual(true);
     });
-    it('should left X is works',  () => {
+    it('should right X is works',  () => {
         $(rightCrossButton).click();
         const text = $(llf).getText();
         expect(text).toEqual('CHANGE STEP OPTIONS?')
-        browser.pause(5000)
     });
-    it('should check SB is clickable',  () => {
-        browser.$$(subButtons).includes()
-        browser.pause(5000);
+    ///////////////////// Tanya
+    it('should check sub Button -1 ', function () {
+        const  step = $(subButton).isClickable();
+        expect(step).toEqual(true);
+        $(subButton).click();
+        const result = $(countValue).getText();
+        expect(result).toEqual('-1');
+    });
+    it('should check add Button 3', function () {
+        const step = $(addButton).isClickable();
+        expect(step).toEqual(true);
+        $(addButton).click();
+        const result = $(countValue).getText();
+        expect(result).toEqual('2');
+    });
+    it('should check that Reset button returns 0 o=in count Value', function () {
+        const step = $(resetButton).isClickable();
+        expect(step).toEqual(true);
+        $(resetButton).click();
+        const result = $(countValue).getText();
+        expect(result).toEqual('0');
+
+    });
+    it('should check the Edit Name Field changes name of Default counter to "New Name"', function () {
+        browser.url('https://likejean.github.io/homework-5/');
+        const text =  $(editNameField).getValue();
+        expect(text).toEqual("Default Counter");
+        $(editNameField).click();
+        $(editNameField).clearValue();
+        $(editNameField).click();
+        const result = $(editNameField).setValue('New Name');
+        const title = $(defaultCounter).getValue();
+        expect(title).toEqual(result);
+    });
+    it('should check that Delete Button deletes default counter', function () {
+        const text = $(deleteButton).getText();
+        expect(text).toEqual("DELETE");
+        $(addButton).click();
+        $(deleteButton).click();
+        const result = $(totalCount).getText();
+        expect(result).toEqual('Total: 0')
+    });
+});
+//////////////////////////////////// ADD Gena
+describe("ADD section tests",function(){
+    it('should have "Enter Counter Title:" field', function () {
+        browser.refresh();
+        const text = $(enterCounterTitle).getText();
+        expect(text).toEqual("Enter Counter Title:");
+    });
+    it('should have "Enter Initial Count:" field',function () {
+        const text = $(enterInitialCount).getText();
+        expect(text).toEqual("Enter Initial Count:");
+    });
+    it('"Enter Counter Title" field should have "Counter Name" by default ',()=>{
+        const text = $(enterCounterTitleField).getValue();
+        expect(text).toEqual('Counter Name');
+    });
+    it('"Enter Counter Title" field should accept "My new counter" text ',()=> {
+        $(enterCounterTitleField).setValue("My new counter");
+        const text = $(enterCounterTitleField).getValue();
+        expect(text).toEqual("My new counter");
+    });
+    it('initial count field should have value 50 by default',()=>{
+        const result = $(enterInitialCountField).getValue();
+        expect(result).toEqual('50')
+    });
+    it("should check that spinner increase value by 1 in initial count field",function () {
+        $(enterInitialCountField).click();
+        browser.keys('ArrowUp');
+        const text = $(enterInitialCountField).getValue();
+        expect(text).toEqual('51');
+    });
+    it("should check that spinner decrease value by 1 in initial count field",function () {
+        $(enterInitialCountField).setValue(60);
+        $(enterInitialCountField).click();
+        browser.keys('ArrowDown');
+        const text = $(enterInitialCountField).getValue();
+        expect(text).toEqual('59');
+    });
+    it('initial count field should accept 45',function () {
+        $(enterInitialCountField).setValue("45");
+        const result = $(enterInitialCountField).getValue();
+        expect(result).toEqual('45')
+    });
+    it('should check ADD COUNTER BUTTON is present',function () {
+        const text = $(addCounterButton).getText();
+        expect(text).toEqual("ADD COUNTER");
+    });
+    it('should check ADD COUNTER BUTTON is clickable',function () {
+        $(addCounterButton).click();
+        const isClickable = $(addCounterButton).isEnabled();
+        expect(isClickable).toEqual(true);
     });
 });
