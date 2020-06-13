@@ -224,7 +224,7 @@ describe("ADD section tests",function() {
         expect(isClickable).toEqual(true);
     });
 });
-///////////// Vitaliy
+/////////////// Vitaliy
 describe('Counter 3', () => {
     it ('should create counter 2', ()=>{
         browser.refresh();
