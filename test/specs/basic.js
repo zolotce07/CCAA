@@ -13,14 +13,14 @@ const ulfValue = "//input[@name='upper']";
 const rightCrossButton = "//button[@class='btn-danger btn-outline-danger btn Ripple-parent close-button']";
 const subButtons = "//button[@class='btn-black btn Ripple-parent']";
 const errorZero = "//span[@style]";
-////////////// Tanya
+////////////// Tanya Ira
 const subButton = "//button[contains(text(),\'-1\')]";
 const addButton = '//body//button[8]';
 const deleteButton = "//button[@id='1']";
 const resetButton = "//button[@class='btn-primary btn Ripple-parent reset']";
 const editNameField = "//input[@id='1']";
 const defaultCounter = "//div[@class]/h3";
-//////////////Gena
+////////////// Gena
 const enterCounterTitleField = '//input[@name="name"]';
 const enterInitialCountField = "//input[@name='value']";
 const addCounterButton ="//button[text()='Add Counter']";
@@ -36,7 +36,17 @@ const thirdLeftCrossButton = "//div[3]//div[2]//button[4]";
 const thirdUlf ="//div[3]//div[2]//button[5]";
 const thirdUlfValue = "//div[3]/div[2]/input[@name='upper']";
 const thirdRightCrossButton = "//div[3]//div[2]//button[5]";
-
+/////////////// Tanya Ira
+const secondCounterHeader = "//div[2]//div[1]//h3[1]";
+const thirdCounterHeader = "//div[3]//div[1]//h3[1]";
+const fourthCounterHeader = "//div[4]//div[1]//h3[1]";
+const fourthDelete = "//button[@id='4']";
+const secondDelete = "//button[@id='2']";
+const sixCounterName = "//h3[text()='6. ']"
+const secondCounterheader = "//div[2]//div[1]//h3[1]";
+const secondCounterDelete = "//button[@id='2']";
+const errorTen = "//span[@style]";
+//const errorTen = "//span[@class='gs_copied']"; //"span.gs_copied"
 
 describe('Before each describe', () => {
     it('should open url CCA',  () =>  {
@@ -172,6 +182,38 @@ describe('Counter 1', () => {
         expect(result).toEqual('Total: 0')
     });
 });
+//////////////////////////////////// Tanya Ira
+describe("Boundary testing of input fields", () => {
+    it('should throw up an Error by input 0 in LLF ',  () => {
+        browser.refresh();
+        $(llf).click();
+        $(llfValue).clearValue();
+        $(llfValue).addValue('0');
+        browser.pause(5000)
+        const error = $(errorZero).getText();
+        expect(error).toEqual('ERROR: Must be greater than zero');
+    });
+    it('should throw up an Error by input 10 in ULF ',  () => {
+        browser.reloadSession();
+        browser.maximizeWindow();
+        browser.url(link);
+        $(ulf).click();
+        $(ulfValue).clearValue();
+        $(ulfValue).addValue('10');
+        //browser.pause(5000);
+        const error = $(errorTen).getText();
+        expect(error).toEqual('ERROR: Must be less than 10');
+    });
+    // it('should throw up an Error by input 10 in ULF ',  () => {
+    //     browser.refresh();
+    //     $(ulf).click();
+    //     $(ulfValue).clearValue();
+    //     $(ulfValue).addValue('10');
+    //     //browser.pause(5000);
+    //     const error = $(errorTen).getText();
+    //     expect(error).toEqual('ERROR: Must be less than 10');
+    // });
+})
 //////////////////////////////////// ADD Gena
 describe("ADD section tests",function() {
     it('should have "Enter Counter Title:" field', function () {
@@ -303,6 +345,92 @@ describe('Counter 3', () => {
         expect(text).toEqual('CHANGE STEP OPTIONS?')
     });
 })
-//
+//////////////// Tanya Ira
+describe ("Manipulations with 2 counters check Total value", () => {
+    it('should add second counter', function () {
+        browser.refresh();
+        $(addButton).click();
+        $(addCounterButton).click();
+        const title = $(secondCounterheader).getText();
+        expect(title).toEqual("2. Counter Name");
+        const result =$(totalCount).getText();
+        expect(result).toEqual("Total: 53")
+    });
+    it('should delete second counter', function () {
+        $(secondCounterDelete).click();
+        const result = $(totalCount).getText();
+        expect(result).toEqual('Total: 3');
+    });
+})
+//////////////// Tanya Ira
+describe("Manipulations with several counters", () => {
+    it('should change the of 1.default counter to "First counter"',  () => {
+        browser.refresh();
+        $(editNameField).click();
+        $(editNameField).clearValue();
+        $(editNameField).addValue('First Counter');
+        const title = $(defaultCounterName).getText();
+        expect(title).toEqual('1. First Counter');
+        $(addButton).click();
+        const result =$(totalCount).getText();
+        expect(result).toEqual("Total: 3")
+    });
+    it('should add "Second counter"', function () {
+        $(enterCounterTitleField).click();
+        $(enterCounterTitleField).clearValue();
+        $(enterCounterTitleField).addValue("Second Counter");
+        $(addCounterButton).click();
+        const title =  $(secondCounterHeader).getText();
+        expect(title).toEqual('2. Second Counter');
+        const result =$(totalCount).getText();
+        expect(result).toEqual("Total: 53")
+    });
+    it('should add "Third counter"', function () {
+        $(enterCounterTitleField).click();
+        $(enterCounterTitleField).clearValue();
+        $(enterCounterTitleField).addValue("Third Counter");
+        $(addCounterButton).click();
+        const title =  $(thirdCounterHeader).getText();
+        expect(title).toEqual('3. Third Counter');
+        const result =$(totalCount).getText();
+        expect(result).toEqual("Total: 103")
+    });
+    it('should add "Fourth counter"', function () {
+        $(enterCounterTitleField).click();
+        $(enterCounterTitleField).clearValue();
+        $(enterCounterTitleField).addValue("Fourth Counter");
+        $(addCounterButton).click();
+        const title = $(fourthCounterHeader).getText();
+        expect(title).toEqual('4. Fourth Counter');
+        const result = $(totalCount).getText();
+        expect(result).toEqual("Total: 153")
+    });
+    it('should delete the Fourth Counter', function () {
+        $(fourthDelete).click();
+        const result = $(totalCount).getText();
+        expect(result).toEqual("Total: 103");
+    });
+    it('should delete the First Counter', function () {
+        $(deleteButton).click();
+        const result = $(totalCount).getText();
+        expect(result).toEqual("Total: 100");
+    });
+    it('should delete the Second Counter', function () {
+        $(secondDelete).click();
+        const result = $(totalCount).getText();
+        expect(result).toEqual("Total: 50");
+    });
+    it('should scrol after 4 counters to add counter button',  () =>  {
+        $(addCounterButton).click()
+        $(addCounterButton).click()
+        $(addCounterButton).click()
+        $(addCounterButton).click()
+        $(addCounterButton).click()
+        $(addCounterButton).scrollIntoView()
+        const result = $(sixCounterName).isDisplayed();
+        expect(result).toEqual(true)
+    });
+})
+
 
 
